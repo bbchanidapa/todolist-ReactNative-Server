@@ -25,7 +25,10 @@ class IndexContainer extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			text: ''
+			text: '',
+			value: '',
+			id: 0,
+			mode: 'MODE_ADD'
 		}
 	}
 
@@ -38,7 +41,11 @@ class IndexContainer extends Component {
 	}
 
 	onEditItem(data){
-		this.props.onUpdateData(data)
+		this.setState({
+			id: data.id,
+			value: data.text,
+			mode: 'MODE_EDIT'
+		})
 	}
 
   render() {
@@ -48,16 +55,34 @@ class IndexContainer extends Component {
 					<Navbars />
 				</View>
         <View>
-					<Item regular style={{ marginTop: 80, margin: 8 }}>
-						<Input placeholder='Text' onChangeText={(e) => { this.setState({text: e}) }}/>
-						<Button info transparent
-							onPress={()=>this.props.onAddData(this.state.text)}
-						><Text> add </Text></Button>
-					</Item>
-					{ this.props.todo.length > 0 ?
-						<TodoList todo={this.props.todo} onDeleteItem={(e)=> this.onDeleteItem(e)} onEditItem={(e)=> this.onEditItem(e)}/> :
-						<Text>Loading...</Text>
+					{ this.state.mode == 'MODE_ADD' ?
+						<View>
+							<Item regular style={{ marginTop: 80, margin: 8 }}>
+								<Input placeholder='Text' onChangeText={(e) => { this.setState({text: e}) }}/>
+								<Button info transparent
+									onPress={()=>this.props.onAddData(this.state.text)}
+								><Text> add </Text></Button>
+							</Item> 
+							<TodoList todo={this.props.todo} onDeleteItem={(e)=> this.onDeleteItem(e)} onEditItem={(e)=> this.onEditItem(e)}/>
+						</View>
+						:
+						<View>
+							<Item regular style={{ marginTop: 80, margin: 8 }}>
+								<Input 
+									value={this.state.value} 
+									onChangeText={(e) => { this.setState({value: e}) }}/>
+								<Button info transparent
+									onPress={()=> {
+										this.props.onUpdateData({id: this.state.id, text: this.state.value})
+										this.setState({mode: 'MODE_ADD'})
+										}
+									}
+								><Text> save </Text></Button>
+							</Item> 
+						</View>
+
 					}
+
 				</View>
       </Container>
     )

@@ -7,12 +7,16 @@ const todo = (state = [], action) => {
     case 'ADD':
       return [...state, action.payload]
     case 'EDIT':
-      return [...state, action.payload]
+      state.map((data, index)=>{
+        if(data.id == action.payload.id) {
+          state[index] = {...state[index], text: action.payload.text}
+        }
+      })
+      return [...state]
     case 'DELETE':
-    const request =  state.filter( thisState =>{
-      return thisState.id !== action.payload.id
-    })
-    console.log(request)
+      const request = state.filter( thisState =>{
+        return thisState.id !== action.payload.id
+      })
       return [...request]
     default:
       return state

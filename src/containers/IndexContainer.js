@@ -19,13 +19,12 @@ import {
 }from 'native-base'
 import Navbars from '../components/Navbars'
 import TodoList from '../components/TodoList'
-import { fetchDataAction, addItemAction } from '../actions/IndexAction'
+import { fetchDataAction, addItemAction, deleteItemAction, updateItemAction } from '../actions/IndexAction'
 
 class IndexContainer extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			todo: [],
 			text: ''
 		}
 	}
@@ -33,10 +32,13 @@ class IndexContainer extends Component {
 	componentDidMount() {
 		this.props.onFetchData()
 	}
-	componentWillReceiveProps(nextProps){
-		this.setState({
-			todo: nextProps.todo[0]
-		})
+
+	onDeleteItem(data){
+		this.props.onDeleteData(data)
+	}
+
+	onEditItem(data){
+		this.props.onUpdateData(data)
 	}
 
   render() {
@@ -52,12 +54,10 @@ class IndexContainer extends Component {
 							onPress={()=>this.props.onAddData(this.state.text)}
 						><Text> add </Text></Button>
 					</Item>
-
-					{ this.state.todo.length > 0 ?
-						<TodoList todo={this.state.todo}/> :
+					{ this.props.todo.length > 0 ?
+						<TodoList todo={this.props.todo} onDeleteItem={(e)=> this.onDeleteItem(e)} onEditItem={(e)=> this.onEditItem(e)}/> :
 						<Text>Loading...</Text>
 					}
-					
 				</View>
       </Container>
     )
@@ -73,6 +73,12 @@ mapDispatchToProps = (dispatch, ownProps) => ({
 	},
 	onAddData: (data) => {
 		dispatch(addItemAction(data))
+	},
+	onDeleteData: (id) => {
+		dispatch(deleteItemAction(id))
+	},
+	onUpdateData: (data) => {
+		dispatch(updateItemAction(data))
 	}
 })
 

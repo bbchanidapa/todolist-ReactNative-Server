@@ -11,23 +11,24 @@ import {
 import TodoItem from './TodoItem'
 
 class TodoList extends Component {
-	componentWillReceiveProps(nextProps){
-		console.log('nextProps', nextProps)
-	}
 	listTodo(){
-		const { todo } = this.props
+		const { todo, onDeleteItem, onEditItem } = this.props
 		return ( 
-			todo.map((obj, index)=>
+			todo.map((data, index)=>
 				(
-					<ListItem key={obj.id}>
-						<CheckBox checked={ obj.isToggle } />
-						<TodoItem value={obj.text}/>
-						<Button small danger><Text> x </Text></Button>
-						<Button small info transparent><Text> edit </Text></Button>
+					<ListItem key={index}>
+						<CheckBox checked={data.isToggle}/>
+						<TodoItem value={data.text}/>
+						<Button small danger
+							onPress={()=> onDeleteItem(data)}
+						><Text> x </Text></Button>
+						<Button small info transparent	
+							onPress={()=> onEditItem(data)}
+						><Text> edit </Text></Button>
 					</ListItem>
 				)
 			)
-		)// return
+		)
 	}
 
   render() {

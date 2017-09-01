@@ -16,6 +16,33 @@ export const addItemAction = (text) => {
 	}
 }
 
+export const deleteItemAction = (res) => {
+	return (dispatch) => {
+		return axios.delete(`http://localhost:3000/todo/${res.id}`)
+				.then(response => {
+					return dispatch({type: 'DELETE', payload: res})
+				})
+				.catch((error) => {
+						console.log(error)
+				})
+	}
+}
+
+export const updateItemAction = (res) => {
+	return (dispatch) => {
+		return axios.put(`http://localhost:3000/todo/${res.id}`, {
+			text: 'BB'
+		})
+				.then(response => {
+					console.log('responseEiei', response)
+						//return dispatch({type: 'EDIT', payload: response.data})
+				})
+				.catch((error) => {
+						console.log(error)
+				})
+	}
+}
+
 export const fetchDataAction = () => {
 	return (dispatch) => {
 		axios.get('http://localhost:3000/todo')

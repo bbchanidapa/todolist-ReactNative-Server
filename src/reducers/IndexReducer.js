@@ -9,7 +9,7 @@ const todo = (state = [], action) => {
     case 'EDIT':
       state.map((data, index)=>{
         if(data.id == action.payload.id) {
-          state[index] = {...state[index], text: action.payload.text}
+          state[index] = {...state[index], text: action.payload.text, isToggle: action.payload.isToggle}
         }
       })
       return [...state]

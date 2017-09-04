@@ -31,10 +31,14 @@ export const deleteItemAction = (res) => {
 export const updateItemAction = (res) => {
 	return (dispatch) => {
 		return axios.put(`http://localhost:3000/todo/${res.id}`, {
-			text: res.text
+			text: res.text,
+			isToggle: res.isToggle
 		})
 				.then(response => {
-					return dispatch({type: 'EDIT', payload: response.data})
+					return dispatch({
+						type: 'EDIT', 
+						payload: response.data
+					})
 				})
 				.catch((error) => {
 						console.log(error)

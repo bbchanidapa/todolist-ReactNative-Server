@@ -17,13 +17,15 @@ class TodoList extends Component {
 			todo.map((data, index)=>
 				(
 					<ListItem key={index}>
-						<CheckBox checked={data.isToggle}/>
+						<CheckBox checked={data.isToggle} 
+							onPress={()=> onEditItem({data: data, abount: 'toggle'})}
+						/>
 						<TodoItem value={data.text}/>
 						<Button small danger
 							onPress={()=> onDeleteItem(data)}
 						><Text> x </Text></Button>
 						<Button small info transparent	
-							onPress={()=> onEditItem(data)}
+							onPress={()=> onEditItem({data: data, abount: 'text'})}
 						><Text> edit </Text></Button>
 					</ListItem>
 				)

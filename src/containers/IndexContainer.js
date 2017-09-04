@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { createStore } from 'redux'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
+import { reduxForm, Field } from 'redux-form'
 import {
 	Container,
 	Content,
@@ -40,12 +41,20 @@ class IndexContainer extends Component {
 		this.props.onDeleteData(data)
 	}
 
-	onEditItem(data){
-		this.setState({
-			id: data.id,
-			value: data.text,
-			mode: 'MODE_EDIT'
-		})
+	onEditItem(res){
+		if(res.abount == 'text'){
+			this.setState({
+				id: res.data.id,
+				value: res.data.text,
+				isToggle: res.data.isToggle,
+				mode: 'MODE_EDIT'
+			})
+		}else{
+			this.setState({
+				mode: 'MODE_ADD'
+			})
+			this.props.onUpdateData({id: res.data.id, text: res.data.text, isToggle: !res.data.isToggle })
+		}
 	}
 
   render() {
@@ -58,23 +67,23 @@ class IndexContainer extends Component {
 					{ this.state.mode == 'MODE_ADD' ?
 						<View>
 							<Item regular style={{ marginTop: 80, margin: 8 }}>
-								<Input placeholder='Text' onChangeText={(e) => { this.setState({text: e}) }}/>
+								<Input placeholder='Text' onChangeText={(e) => { this.setState({text: e}) }} />
 								<Button info transparent
 									onPress={()=>this.props.onAddData(this.state.text)}
 								><Text> add </Text></Button>
-							</Item> 
+							</Item>
 							<TodoList todo={this.props.todo} onDeleteItem={(e)=> this.onDeleteItem(e)} onEditItem={(e)=> this.onEditItem(e)}/>
 						</View>
 						:
 						<View>
 							<Item regular style={{ marginTop: 80, margin: 8 }}>
-								<Input 
+								<Input
 									value={this.state.value} 
 									onChangeText={(e) => { this.setState({value: e}) }}/>
 								<Button info transparent
 									onPress={()=> {
-										this.props.onUpdateData({id: this.state.id, text: this.state.value})
-										this.setState({mode: 'MODE_ADD'})
+											this.props.onUpdateData({id: this.state.id, text: this.state.value, isToggle: this.state.isToggle })
+											this.setState({mode: 'MODE_ADD'})
 										}
 									}
 								><Text> save </Text></Button>

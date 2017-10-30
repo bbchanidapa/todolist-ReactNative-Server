@@ -4,10 +4,15 @@ import {
 	Container,
 	List,
 	ListItem,
-	Text,
-	CheckBox,
-	Button
+	Text
 } from 'native-base'
+import Mascot from 'mascot'
+const { Components } = Mascot
+const { 
+    TextField,
+		Checkbox,
+		Button
+} = Components
 import TodoItem from './TodoItem'
 
 class TodoList extends Component {
@@ -17,16 +22,23 @@ class TodoList extends Component {
 			todo.map((data, index)=>
 				(
 					<ListItem key={index}>
-						<CheckBox checked={data.isToggle} 
-							onPress={()=> onEditItem({data: data, abount: 'toggle'})}
-						/>
+						<Checkbox 
+            	isChecked={data.isToggle}
+            	action={() =>  onEditItem({data: data, abount: 'toggle'}) }
+          	/>
 						<TodoItem value={data.text}/>
-						<Button small danger
-							onPress={()=> onDeleteItem(data)}
-						><Text> x </Text></Button>
-						<Button small info transparent	
-							onPress={()=> onEditItem({data: data, abount: 'text'})}
-						><Text> edit </Text></Button>
+						<Button
+							title={'x'}
+							theme="danger"
+							width={40}
+							action={() => onDeleteItem(data)}
+						/>
+						<Button
+							title={'edit'}
+							theme="primary"
+							width={60}
+							action={() => onEditItem({data: data, abount: 'text'})}
+						/>
 					</ListItem>
 				)
 			)
